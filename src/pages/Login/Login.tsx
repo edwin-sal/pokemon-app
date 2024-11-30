@@ -9,8 +9,8 @@ const Login: React.FC = () => {
   const [profilePicture, setProfilePicture] = useState('../../../resources/images/default-profile.jpg');
 
   return (
-    <IonPage>
-     <IonContent className="ion-padding">
+    <IonPage className={styles['loign-page']}>
+     <IonContent className={`${styles['login-background']} ion-padding`}>
         <div className={styles['card-container']}>
           <img 
             src={loginIcon}
