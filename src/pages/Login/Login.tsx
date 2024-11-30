@@ -1,9 +1,10 @@
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
 import styles from './Login.module.css';
 import loginIcon from '../../../resources/images/whos-that-pokemon-logo.png';
 import profilePicture from '../../../resources/images/default-profile.jpg';
 import { useState } from 'react';
+import { add } from 'ionicons/icons';
 
 const Login: React.FC = () => {
   const profileUrl = '../../../resources/images/profiles/';
@@ -92,8 +93,13 @@ const Login: React.FC = () => {
               ))}
             </div>
           </IonContent>
-        </IonModal>
 
+          <IonFab slot="fixed" vertical="bottom" horizontal="end">
+            <IonFabButton>
+              <IonIcon icon={add}></IonIcon>
+            </IonFabButton>
+          </IonFab>
+        </IonModal>
       </IonContent>
     </IonPage>
   );
