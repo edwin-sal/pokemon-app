@@ -37,3 +37,9 @@ ion-app {
   height: 100dvh;
   margin: 0;
 }
+
+.profile-pictures-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
