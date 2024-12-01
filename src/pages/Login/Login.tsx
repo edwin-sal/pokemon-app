@@ -28,6 +28,16 @@ const Login: React.FC = () => {
   });
   const [usersData, setUsersData] = useState<User[]>([]); 
 
+  // Prevents authenticated users from accessing this page
+  useEffect(() => {
+    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
+    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
+
+    if(isAuthenticated) {
+      history.replace('/home');
+    }
+  }, [history])
+
   // Fetch data from localStorage
   useEffect(() => {
     try {
