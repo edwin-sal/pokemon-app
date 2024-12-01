@@ -38,8 +38,19 @@ const Settings = () => {
         isDarkMode: isDarkMode   // Update the isDarkMode property
       }
     };
+    setCurrentUser(updatedCurrentUser);
 
-    setCurrentUser(updatedCurrentUser)
+    // Update localStorage
+    let newUsers = JSON.parse(localStorage.getItem('users'));
+    console.warn(newUsers);
+    newUsers = newUsers.map(user => {
+      if(updatedCurrentUser.username === user.username) {
+        return updatedCurrentUser;
+      } else {
+        return user;
+      }
+    });
+    localStorage.setItem('users', JSON.stringify(newUsers));
 
     if (isDarkMode) {
       document.documentElement.classList.add('ion-palette-dark');
@@ -54,6 +65,9 @@ const Settings = () => {
 
     // Disable authentication
     localStorage.setItem('isAuthenticated', JSON.stringify(false));
+
+    // Remove dark mode
+    document.documentElement.classList.remove('ion-palette-dark');
 
     // Navigate to /login
     history.replace('/login');
