@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route, useHistory } from 'react-router-dom';
 import {
   IonIcon,
@@ -44,11 +44,27 @@ const MainPage = () => {
     }
   }, []);
 
+  const [generation, setGeneration] = useState(1);
+
+  console.log(generation);
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path="/home/play" component={Play} />
-        <Route exact path="/home/settings" component={Settings} />
+        <Route
+          exact
+          path="/home/play"
+          render={(props) => (
+            <Play {...props} generation={generation} setGeneration={setGeneration} />
+          )}
+        />
+        
+        <Route
+          exact
+          path="/home/settings"
+          render={(props) => (
+            <Settings {...props} generation={generation} setGeneration={setGeneration} />
+          )}
+        />
 
         {/* Redirect /home to /home/tab1 */}
         <Route exact path="/home" render={() => <Redirect to="/home/play" />} />

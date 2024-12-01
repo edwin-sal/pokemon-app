@@ -1,11 +1,11 @@
-import { IonAvatar, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
-import { analytics, gameController, logOut } from 'ionicons/icons';
+import { IonAvatar, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
+import { analytics, caretForwardCircleOutline, caretUpCircleOutline, chevronBackCircle, chevronForwardOutline, chevronUpCircle, chevronUpOutline, gameController, logOut, logOutOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import '@ionic/react/css/palettes/dark.class.css';
 import { useHistory } from 'react-router';
 
-const Settings = () => {
+const Settings = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -77,8 +77,14 @@ const Settings = () => {
     history.replace('/login');
   };
 
-  // Render the page
-  console.log(currentUser)
+  // For selecting generation
+  const handleGenerationChange = (e) => {
+    const selectedValue = e.detail.value;
+    props.setGeneration(selectedValue);
+  };
+
+  console.log(currentUser);
+  console.log(props.generation)
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -101,9 +107,23 @@ const Settings = () => {
             <IonIcon aria-hidden="true" icon={analytics} />
           </IonItem>
 
+          <IonItem>
+            <IonSelect 
+              onIonChange={handleGenerationChange}
+              interface="action-sheet" 
+              label="Select Generation" 
+              placeholder="">
+              <IonSelectOption value={1}>Generation 1</IonSelectOption>
+              <IonSelectOption value={2}>Generation 2</IonSelectOption>
+              <IonSelectOption value={3}>Generation 3</IonSelectOption>
+              <IonSelectOption value={4}>Generation 4</IonSelectOption>
+              <IonSelectOption value={5}>Generation 5</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
           <IonItem button onClick={handleLogout}>
             <IonLabel>Logout</IonLabel>
-            <IonIcon aria-hidden="true" icon={logOut} />
+            <IonIcon aria-hidden="true" icon={logOutOutline} />
           </IonItem>
 
         </IonList>
