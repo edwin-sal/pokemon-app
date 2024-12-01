@@ -45,6 +45,7 @@ const MainPage = () => {
   }, []);
 
   const [generation, setGeneration] = useState(1);
+  const [refreshLocalstorage, setRefreshLocalstorage] = useState(0);
 
   console.log(generation);
   return (
@@ -54,7 +55,12 @@ const MainPage = () => {
           exact
           path="/home/play"
           render={(props) => (
-            <Play {...props} generation={generation} setGeneration={setGeneration} />
+            <Play {...props} 
+              generation={generation} 
+              setGeneration={setGeneration} 
+              refreshLocalstorage={refreshLocalstorage}
+              setRefreshLocalstorage={setRefreshLocalstorage}
+            />
           )}
         />
         
@@ -62,7 +68,11 @@ const MainPage = () => {
           exact
           path="/home/settings"
           render={(props) => (
-            <Settings {...props} generation={generation} setGeneration={setGeneration} />
+            <Settings {...props} 
+              generation={generation} 
+              setGeneration={setGeneration} 
+              refreshLocalstorage={refreshLocalstorage}
+            />
           )}
         />
 

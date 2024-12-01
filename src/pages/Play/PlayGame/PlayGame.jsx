@@ -113,6 +113,9 @@ export default function PlayGame(props) {
 
         return updatedCurrentUser;
       });
+
+      // Update useEffect dependency for fetching users in Settings
+      props.setRefreshLocalstorage(prevValue => prevValue += 1);
     }
 
     // Display result in a toast

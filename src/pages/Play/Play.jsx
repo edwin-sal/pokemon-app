@@ -70,6 +70,7 @@ const Play = (props) => {
         generation={props.generation} 
         goBack={() => setIsPlayingGame(false)} 
         setNewHighScore={setNewHighScore}
+        setRefreshLocalstorage={props.setRefreshLocalstorage}
       />
     
   );

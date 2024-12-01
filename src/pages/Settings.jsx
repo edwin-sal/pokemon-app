@@ -1,5 +1,5 @@
-import { IonAvatar, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
-import { analytics, caretForwardCircleOutline, caretUpCircleOutline, chevronBackCircle, chevronForwardOutline, chevronUpCircle, chevronUpOutline, gameController, logOut, logOutOutline } from 'ionicons/icons';
+import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonNote, IonPage, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
+import { analytics, caretForwardCircleOutline, caretUpCircleOutline, chevronBackCircle, chevronForwardOutline, chevronUpCircle, chevronUpOutline, gameController, logOut, logOutOutline, trophy } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import '@ionic/react/css/palettes/dark.class.css';
@@ -8,6 +8,8 @@ import { useHistory } from 'react-router';
 const Settings = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [usersData, setUsersData] = useState([]);
 
   const history = useHistory();
 
@@ -24,6 +26,14 @@ const Settings = (props) => {
       console.error('Error parsing currentUser from localStorage:', error);
     }
   }, []);
+
+  // Fetch data of users
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('users'));
+    users.sort((a, b) => b.score - a.score);
+    console.warn(users);
+    setUsersData(users);
+  }, [props.refreshLocalstorage]);
 
   // For toggline dark mode
   const handleToggleChange = (event) => {
@@ -85,6 +95,7 @@ const Settings = (props) => {
 
   console.log(currentUser);
   console.log(props.generation)
+  console.log(showLeaderboard);
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -102,8 +113,8 @@ const Settings = (props) => {
             </IonToggle>
           </IonItem>
 
-          <IonItem button>
-            <IonLabel>View Leaderboards</IonLabel>
+          <IonItem button onClick={() => setShowLeaderboard(true)}>
+            <IonLabel>View Leaderboard</IonLabel>
             <IonIcon aria-hidden="true" icon={analytics} />
           </IonItem>
 
@@ -128,6 +139,32 @@ const Settings = (props) => {
 
         </IonList>
       </IonContent>
+
+      <IonModal isOpen={showLeaderboard}>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Leaderboard</IonTitle>
+              
+              <IonButtons slot="end">
+                <IonButton onClick={() => setShowLeaderboard(false)}>Close</IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent >
+            <IonList cla lines="full">
+              {usersData.map((user, index) => (
+                <IonItem key={index}>
+                  <IonAvatar slot="start">
+                    <img alt="Silhouette of a person's head" src={user?.profilePicture} />
+                  </IonAvatar>
+                  <IonLabel>{user?.username}</IonLabel>
+                  {user?.score}
+                </IonItem>
+              ))}
+          </IonList>
+          </IonContent>
+        </IonModal>
     </IonPage>
   );
 };
