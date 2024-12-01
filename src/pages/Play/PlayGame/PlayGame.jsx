@@ -17,6 +17,8 @@ export default function PlayGame(props) {
     isShown: false,
   });
   const [showAlert, setShowAlert] = useState(false);
+  const [showHiddenPokemon, setShowHiddenPokemon] = useState(false);
+  const [isLost, setIsLost] = useState(false);
 
   const blackFilter = {
     filter: 'grayscale(100%) brightness(2%)',
@@ -70,14 +72,18 @@ export default function PlayGame(props) {
     const isCorrectAnswer = userPick.name === hiddenPokemon.name;
     let score = currentScore;
 
+    // Show pokemon
+    setShowHiddenPokemon(true);
+
     // Update score
     if(isCorrectAnswer) {
       setCurrentScore(prevCurrentScore => prevCurrentScore += 1);
       score++;
-      // Fetch new pokemon
-      setNewFetch(prevNewFetch => prevNewFetch += 1);
     } else {
       setShowAlert(true);
+
+      // For hiding the next button
+      setIsLost(true);
     }
 
     // Update high score if exceeded
@@ -164,7 +170,7 @@ export default function PlayGame(props) {
           <IonCard style={{width: '100%'}}>
             <div className={`${styles['image-container']} ion-text-center ion-margin`}>
               <img 
-                style={blackFilter}
+                style={!showHiddenPokemon ? blackFilter : {}}
                 alt="Silhouette of a Pokemon" 
                 src={hiddenPokemon?.sprite} 
                 width={150}
@@ -185,7 +191,28 @@ export default function PlayGame(props) {
             </IonCardContent>
           </IonCard>
 
-          <IonButton onClick={props.goBack} className="ion-margin">Go back</IonButton> 
+          <div>
+            <IonButton 
+              onClick={props.goBack} 
+              className="ion-margin" 
+              style={{width: '120px'}}>
+              Go back
+            </IonButton> 
+            
+            {(showHiddenPokemon && !isLost) &&
+              <IonButton 
+                color="success"
+                onClick={() => {
+                  // Fetch new pokemon
+                  setNewFetch(prevNewFetch => prevNewFetch += 1);
+                  setShowHiddenPokemon(false);
+                }} 
+                className="ion-margin" 
+                style={{width: '120px'}}>
+                Next
+              </IonButton>
+            }
+          </div>
         </div>
         
       </IonContent>
