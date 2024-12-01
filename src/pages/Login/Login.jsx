@@ -97,6 +97,9 @@ const Login = () => {
       console.log(user)
     }
 
+    // Set profile picture of user
+    user.profilePicture = profilePicture;
+
     // Add currentUser to localStorage
     localStorage.setItem('currentUser', JSON.stringify(user));
 
