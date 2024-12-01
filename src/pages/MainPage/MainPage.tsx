@@ -1,5 +1,5 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Redirect, Route, useHistory } from 'react-router-dom';
 import {
   IonIcon,
   IonLabel,
@@ -7,6 +7,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  useIonRouter,
 } from '@ionic/react';
 import { ellipse, square, triangle } from 'ionicons/icons';
 import Tab1 from '../Tab1';
@@ -14,6 +15,23 @@ import Tab2 from '../Tab2';
 import Tab3 from '../Tab3';
 
 const MainPage: React.FC = () => {
+  const router = useIonRouter();
+
+  useEffect(() => {
+    interface User {
+      username: string;
+      profilePicture: string;
+      score: number;
+    }
+
+    const retrievedValue: string | null = localStorage.getItem('authenticated');
+    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
+
+    if(!isAuthenticated) {
+      router.push('/login');
+    }
+  }, [])
+
   return (
     <IonTabs>
       <IonRouterOutlet>

@@ -88,7 +88,7 @@ const Login: React.FC = () => {
       localStorage.setItem('isAuthenticated', JSON.stringify(true));
 
       // Navigate to /home
-      history.push('/home'); // Navigate to '/dashboard'
+      history.replace('/home');
     }
   };
 
