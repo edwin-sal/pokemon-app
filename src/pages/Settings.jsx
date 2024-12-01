@@ -1,5 +1,5 @@
 import { IonAvatar, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
-import { gameController, logOut } from 'ionicons/icons';
+import { analytics, gameController, logOut } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import '@ionic/react/css/palettes/dark.class.css';
@@ -90,6 +90,11 @@ const Settings = () => {
             <IonToggle checked={darkMode} onIonChange={handleToggleChange}>
               <IonLabel>Enable Dark Mode</IonLabel>
             </IonToggle>
+          </IonItem>
+
+          <IonItem button>
+            <IonLabel>View Leaderboards</IonLabel>
+            <IonIcon aria-hidden="true" icon={analytics} />
           </IonItem>
 
           <IonItem button onClick={handleLogout}>
