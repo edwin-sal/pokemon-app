@@ -12,20 +12,37 @@ import {
 import { ellipse, gameController, settings, square, triangle } from 'ionicons/icons';
 import Play from '../Play';
 import Settings from '../Settings';
-import Tab3 from '../Tab3';
 
-const MainPage: React.FC = () => {
+const MainPage = () => {
   const history = useHistory();
 
   // Prevents unauthenticated users from accessing this page
   useEffect(() => {
-    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
-    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
+    const retrievedValue = localStorage.getItem('isAuthenticated');
+    const isAuthenticated = JSON.parse(retrievedValue);
 
     if(!isAuthenticated) {
       history.replace('/login');
     }
   }, [history])
+
+  // Set darkmode setting
+  useEffect(() => {
+    try {
+      const currentUserData = localStorage.getItem('currentUser');
+      if (currentUserData) {
+        const data = JSON.parse(currentUserData);
+
+        if(data.config.isDarkMode) {
+          document.documentElement.classList.add('ion-palette-dark');
+        } else {
+          document.documentElement.classList.remove('ion-palette-dark');
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing currentUser from localStorage:', error);
+    }
+  }, []);
 
   return (
     <IonTabs>

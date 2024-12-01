@@ -2,19 +2,11 @@ import { IonAlert, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader
 import ExploreContainer from '../../components/ExploreContainer';
 import styles from './Login.module.css';
 import loginIcon from '../../../resources/images/whos-that-pokemon-logo.png';
-import profilePicture from '../../../resources/images/default-profile.jpg';
 import { useEffect, useState } from 'react';
 import { add } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
-
-const Login: React.FC = () => {
-   interface User {
-      username: string;
-      profilePicture: string;
-      score: number;
-  }
-
+const Login = () => {
   const profileUrl = '../../../resources/images/profiles/';
   const history = useHistory();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,12 +18,12 @@ const Login: React.FC = () => {
     header: 'Undefined header',
     message: 'Undefined message',
   });
-  const [usersData, setUsersData] = useState<User[]>([]); 
+  const [usersData, setUsersData] = useState([]); 
 
   // Prevents authenticated users from accessing this page
   useEffect(() => {
-    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
-    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
+    const retrievedValue = localStorage.getItem('isAuthenticated');
+    const isAuthenticated = retrievedValue ? JSON.parse(retrievedValue) : false; 
 
     if(isAuthenticated) {
       history.replace('/home');
@@ -75,10 +67,13 @@ const Login: React.FC = () => {
     }
 
     // Define the user object
-    let user: User = {  // Ensure the user object is typed as User
+    let user = {  // Ensure the user object is typed as User
       profilePicture: profilePicture,
       score: 0,
       username: userName,
+      config: {
+        isDarkMode: true,
+      },
     };
 
     // Check if user already exists
@@ -111,13 +106,13 @@ const Login: React.FC = () => {
     history.replace('/home/play');
   };
 
-  const handleUserNameChange = (event: CustomEvent) => {
+  const handleUserNameChange = (event) => {
     setUserName(event.detail.value);
   };
 
   // console.log(userName);
   // console.log(profilePicture)
-  console.log(usersData);
+  // console.log(usersData);
   return (
     <IonPage className={styles['loign-page']}>
      <IonContent className={`${styles['login-background']} ion-padding`}>
@@ -210,6 +205,6 @@ const Login: React.FC = () => {
       </IonContent>
     </IonPage>
   );
-};
+}
 
 export default Login;

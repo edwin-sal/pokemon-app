@@ -3,35 +3,21 @@ import { gameController, logOut } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import '@ionic/react/css/palettes/dark.class.css';
+import { useHistory } from 'react-router';
 
-// Define the interface for the currentUser object
-interface User {
-  username: string;
-  profilePicture: string;
-  score: number;
-}
-
-const Settings: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+const Settings = () => {
+  const [currentUser, setCurrentUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
-  // For toggline dark mode
-  const handleToggleChange = (event: CustomEvent) => {
-    const isDarkMode = event.detail.checked;
-    setDarkMode(isDarkMode);
-    if (isDarkMode) {
-      document.documentElement.classList.add('ion-palette-dark');
-    } else {
-      document.documentElement.classList.remove('ion-palette-dark');
-    }
-  };
+  const history = useHistory();
 
   // Fetch data of the current user
   useEffect(() => {
     try {
       const currentUserData = localStorage.getItem('currentUser');
       if (currentUserData) {
-        const data: User = JSON.parse(currentUserData);
+        const data = JSON.parse(currentUserData);
+        setDarkMode(data.config.isDarkMode);
         setCurrentUser(data);
       }
     } catch (error) {
@@ -39,8 +25,42 @@ const Settings: React.FC = () => {
     }
   }, []);
 
+  // For toggline dark mode
+  const handleToggleChange = () => {
+    const isDarkMode = event.detail.checked;
+    setDarkMode(isDarkMode);
+
+    // Update state for current user
+    const updatedCurrentUser = {
+      ...currentUser, 
+      config: { 
+        ...currentUser?.config, // Spread the existing config object if it exists
+        isDarkMode: isDarkMode   // Update the isDarkMode property
+      }
+    };
+
+    setCurrentUser(updatedCurrentUser)
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('ion-palette-dark');
+    } else {
+      document.documentElement.classList.remove('ion-palette-dark');
+    }
+  };
+
+  const handleLogout = () => {
+    // Remove currentUser
+    localStorage.removeItem('currentUser');
+
+    // Disable authentication
+    localStorage.setItem('isAuthenticated', JSON.stringify(false));
+
+    // Navigate to /login
+    history.replace('/login');
+  };
+
   // Render the page
-  console.log(darkMode)
+  console.log(currentUser)
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -58,7 +78,7 @@ const Settings: React.FC = () => {
             </IonToggle>
           </IonItem>
 
-          <IonItem button>
+          <IonItem button onClick={handleLogout}>
             <IonLabel>Logout</IonLabel>
             <IonIcon aria-hidden="true" icon={logOut} />
           </IonItem>

@@ -52,7 +52,7 @@ import { useState } from 'react';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false); 
 
   return (
