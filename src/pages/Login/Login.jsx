@@ -86,19 +86,32 @@ const Login = () => {
       }
     }
 
+    // Set profile picture of user
+    user.profilePicture = profilePicture;
+
+    const currentUsers = JSON.parse(localStorage.getItem('users'));
+    const updatedUsers = currentUsers.map(storedUser => {
+      if(storedUser.username === user.username) {
+        return user;
+      } else {
+        return storedUser;
+      }
+    });
+
+    console.warn(updatedUsers);
+
     // Add user if it does not exist yet
     if(!userAlreadyExists) {
       console.warn('adding new user!');
       const dataToSave = [...usersData, user];
       setUsersData(prevUsersData => (dataToSave));
       localStorage.setItem('users', JSON.stringify(dataToSave));
-    } else {
+    } 
+    
+    else {
       console.warn('user already exist!');
-      console.log(user)
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
     }
-
-    // Set profile picture of user
-    user.profilePicture = profilePicture;
 
     // Add currentUser to localStorage
     localStorage.setItem('currentUser', JSON.stringify(user));
