@@ -26,7 +26,7 @@ const Settings = () => {
   }, []);
 
   // For toggline dark mode
-  const handleToggleChange = () => {
+  const handleToggleChange = (event) => {
     const isDarkMode = event.detail.checked;
     setDarkMode(isDarkMode);
 
@@ -40,7 +40,10 @@ const Settings = () => {
     };
     setCurrentUser(updatedCurrentUser);
 
-    // Update localStorage
+    // Update localStorage for currentUser
+    localStorage.setItem('currentUser', JSON.stringify(updatedCurrentUser));
+
+    // Update localStorage for users
     let newUsers = JSON.parse(localStorage.getItem('users'));
     console.warn(newUsers);
     newUsers = newUsers.map(user => {
@@ -52,6 +55,7 @@ const Settings = () => {
     });
     localStorage.setItem('users', JSON.stringify(newUsers));
 
+    // Toggle dark mode
     if (isDarkMode) {
       document.documentElement.classList.add('ion-palette-dark');
     } else {

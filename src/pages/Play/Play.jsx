@@ -1,11 +1,25 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import styles from './Play.module.css'
 import { useEffect, useState } from 'react';
 import pokemon from '../../../resources/images/gifs/mew.gif'
 
 const Play = () => {
+  const [currentUser, setCurrentUser] = useState(null);
   const [pokemonGif, setPokemonGif] = useState('../../../resources/images/gifs/mew.gif');
+
+  // Fetch data of the current user
+  useEffect(() => {
+    try {
+      const currentUserData = localStorage.getItem('currentUser');
+      if (currentUserData) {
+        const data = JSON.parse(currentUserData);
+        setCurrentUser(data);
+      }
+    } catch (error) {
+      console.error('Error parsing currentUser from localStorage:', error);
+    }
+  }, []);
 
   // Set pokemon gif
   useEffect(() => {
@@ -28,7 +42,7 @@ const Play = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen className="ion-flex ion-align-items-center ion-justify-content-center">
+      <IonContent fullscreen className={styles['play-background']}>
         <div className={styles['play-button-container']}>
           <img 
             src={pokemonGif}
@@ -36,7 +50,11 @@ const Play = () => {
             width="200px"
           />
 
-          <IonButton>Play Game</IonButton>
+          <IonButton size='large'>Play Game</IonButton>
+
+          <IonLabel className='ion-margin-top'>
+            <h1>High Score: {currentUser?.score}</h1>
+          </IonLabel>
         </div>
       </IonContent>
     </IonPage>

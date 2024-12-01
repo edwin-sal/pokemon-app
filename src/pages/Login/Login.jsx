@@ -72,7 +72,7 @@ const Login = () => {
       score: 0,
       username: userName,
       config: {
-        isDarkMode: true,
+        isDarkMode: false,
       },
     };
 
