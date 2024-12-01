@@ -10,7 +10,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { ellipse, gameController, settings, square, triangle } from 'ionicons/icons';
-import Tab1 from '../Tab1';
+import Play from '../Play';
 import Tab2 from '../Tab2';
 import Tab3 from '../Tab3';
 
@@ -30,7 +30,7 @@ const MainPage: React.FC = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path="/home/play" component={Tab1} />
+        <Route exact path="/home/play" component={Play} />
         <Route exact path="/home/settings" component={Tab2} />
 
         {/* Redirect /home to /home/tab1 */}

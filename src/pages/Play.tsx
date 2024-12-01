@@ -1,8 +1,7 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './Tab1.css';
 
-const Tab1: React.FC = () => {
+const Play: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -17,4 +16,4 @@ const Tab1: React.FC = () => {
   );
 };
 
-export default Tab1;
+export default Play;
