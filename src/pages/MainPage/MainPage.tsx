@@ -24,7 +24,7 @@ const MainPage: React.FC = () => {
       score: number;
     }
 
-    const retrievedValue: string | null = localStorage.getItem('authenticated');
+    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
     const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
 
     if(!isAuthenticated) {
