@@ -1,9 +1,9 @@
-import { IonAlert, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonModal, IonPage, IonRow, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
 import styles from './Login.module.css';
 import loginIcon from '../../../resources/images/whos-that-pokemon-logo.png';
 import profilePicture from '../../../resources/images/default-profile.jpg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { add } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
@@ -30,6 +30,16 @@ const Login: React.FC = () => {
     'profile6.webp',
     'diwata.webp',
   ];
+
+  // Navigate users to /home if they are authenticated
+  useEffect(() => {
+    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
+    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
+
+    if(isAuthenticated) {
+      history.replace('/home');
+    }
+  }, [])
 
   const handleLogin = () => {
     // Check if the user entered a username

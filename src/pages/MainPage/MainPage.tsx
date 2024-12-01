@@ -15,20 +15,15 @@ import Tab2 from '../Tab2';
 import Tab3 from '../Tab3';
 
 const MainPage: React.FC = () => {
-  const router = useIonRouter();
+  const history = useHistory();
 
+  // Prevents unauthenticated users from accessing this page
   useEffect(() => {
-    interface User {
-      username: string;
-      profilePicture: string;
-      score: number;
-    }
-
     const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
     const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
 
     if(!isAuthenticated) {
-      router.push('/login');
+      history.replace('/login');
     }
   }, [])
 
