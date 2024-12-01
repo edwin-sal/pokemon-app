@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { ellipse, gameController, settings, square, triangle } from 'ionicons/icons';
 import Play from '../Play';
-import Tab2 from '../Tab2';
+import Settings from '../Settings';
 import Tab3 from '../Tab3';
 
 const MainPage: React.FC = () => {
@@ -31,7 +31,7 @@ const MainPage: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/home/play" component={Play} />
-        <Route exact path="/home/settings" component={Tab2} />
+        <Route exact path="/home/settings" component={Settings} />
 
         {/* Redirect /home to /home/tab1 */}
         <Route exact path="/home" render={() => <Redirect to="/home/play" />} />
