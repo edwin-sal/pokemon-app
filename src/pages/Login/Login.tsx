@@ -9,9 +9,15 @@ import { useHistory } from 'react-router-dom';
 
 
 const Login: React.FC = () => {
+   interface User {
+      username: string;
+      profilePicture: string;
+      score: number;
+  }
+
   const profileUrl = '../../../resources/images/profiles/';
   const history = useHistory();
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profilePicture, setProfilePicture] = useState(`${profileUrl}profile1.webp`);
   const [isOpen, setIsOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -19,7 +25,23 @@ const Login: React.FC = () => {
   const [errorInfo, setErrorInfo] = useState({
     header: 'Undefined header',
     message: 'Undefined message',
-  })
+  });
+  const [usersData, setUsersData] = useState<User[]>([]); 
+
+  // Fetch data from localStorage
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem('users');
+      if(data) {
+        const users = JSON.parse(data);
+        setUsersData(users);
+      }
+    } 
+    
+    catch (error) {
+      console.error(error);
+    }
+  }, [])
   
   const profilePictures = [
     'profile1.webp',
@@ -31,19 +53,9 @@ const Login: React.FC = () => {
     'diwata.webp',
   ];
 
-  // Navigate users to /home if they are authenticated
-  useEffect(() => {
-    const retrievedValue: string | null = localStorage.getItem('isAuthenticated');
-    const isAuthenticated: boolean = retrievedValue ? JSON.parse(retrievedValue) : false; 
-
-    if(isAuthenticated) {
-      history.replace('/home');
-    }
-  }, [])
-
   const handleLogin = () => {
     // Check if the user entered a username
-    if(userName.length === 0) {
+    if (userName.length === 0) {
       setErrorInfo({
         header: 'Invalid Username',
         message: 'Please enter a valid username and try again',
@@ -52,54 +64,41 @@ const Login: React.FC = () => {
       return;
     }
 
-    // Set info to localStorage
-    interface User {
-      username: string;
-      profilePicture: string;
-      score: number;
+    // Define the user object
+    let user: User = {  // Ensure the user object is typed as User
+      profilePicture: profilePicture,
+      score: 0,
+      username: userName,
+    };
+
+    // Check if user already exists
+    let userAlreadyExists = false;
+    for (let i = 0; i < usersData.length; i++) {
+      if (usersData[i].username === user.username) {
+        userAlreadyExists = true;
+        user = usersData[i];
+        break;
+      }
     }
 
-    // If users in localSstorage is empty, set a new one
-    if (localStorage.getItem('users') === null) {
-      localStorage.setItem('users', JSON.stringify([{
-        username: userName,
-        profilePicture: profilePicture,
-        score: 0,
-      }]))
-    } 
-    
-    // Check if the username already exists
-    else {
-      const storedUsers = localStorage.getItem('users');
-      const data: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-      
-      // Check if userName already exists
-      let userNameAlreadyExist = false;
-      for(let i = 0; i < data.length; i++) {
-        if(data[i].username === userName) {
-          // console.log(`${data[i].username} === ${userName}`)
-          userNameAlreadyExist = true;
-          break;
-        } 
-      }
-
-      // Add new user if it doesn't exists yet
-      if(!userNameAlreadyExist) {
-        const updatedData = [...data, {
-          username: userName,
-          profilePicture: profilePicture,
-          score: 0,
-        }]
-
-        localStorage.setItem('users', JSON.stringify(updatedData));
-      }
-
-      // Set authentication to true
-      localStorage.setItem('isAuthenticated', JSON.stringify(true));
-
-      // Navigate to /home
-      history.replace('/home');
+    // Add user if it does not exist yet
+    if(!userAlreadyExists) {
+      console.warn('adding new user!');
+      const dataToSave = [...usersData, user];
+      setUsersData(prevUsersData => (dataToSave));
+      localStorage.setItem('users', JSON.stringify(dataToSave));
+    } else {
+      console.warn('user already exist!');
+      console.log(user)
     }
+
+    // Add currentUser to localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    // Set authentication to true
+    localStorage.setItem('isAuthenticated', JSON.stringify(true));
+
+    history.replace('/home/play');
   };
 
   const handleUserNameChange = (event: CustomEvent) => {
@@ -108,6 +107,7 @@ const Login: React.FC = () => {
 
   // console.log(userName);
   // console.log(profilePicture)
+  console.log(usersData);
   return (
     <IonPage className={styles['loign-page']}>
      <IonContent className={`${styles['login-background']} ion-padding`}>
