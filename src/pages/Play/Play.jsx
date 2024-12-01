@@ -3,10 +3,12 @@ import { IonAlert, IonButton, IonContent, IonHeader, IonLabel, IonPage, IonTitle
 import styles from './Play.module.css'
 import { useEffect, useState } from 'react';
 import pokemon from '../../../resources/images/gifs/mew.gif'
+import PlayGame from './PlayGame/PlayGame';
 
 const Play = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [pokemonGif, setPokemonGif] = useState('../../../resources/images/gifs/mew.gif');
+  const [isPlayingGame, setIsPlayingGame] = useState(false);
 
   // Fetch data of the current user
   useEffect(() => {
@@ -42,24 +44,29 @@ const Play = (props) => {
 
   console.log(props.generation);
   return (
-    <IonPage>
-      <IonContent fullscreen className={styles['play-background']}>
-        <div className={styles['play-button-container']}>
-          <img 
-            src={pokemonGif}
-            alt="Pokemon gif"
-            width="200px"
-          />
+    !isPlayingGame 
+    ?
+      <IonPage>
+        <IonContent fullscreen className={styles['play-background']}>
+          <div className={styles['play-button-container']}>
+            <img 
+              src={pokemonGif}
+              alt="Pokemon gif"
+              width="200px"
+            />
 
-          <IonButton id="play-alert" size='large'>Play Game</IonButton>
+            <IonButton onClick={() => setIsPlayingGame(true)} id="play-alert" size='large'>Play Game</IonButton>
 
-          <IonLabel className='ion-margin-top'>
-            <h1>High Score: {currentUser?.score}</h1>
-          </IonLabel>
-        </div>
-        
-      </IonContent>
-    </IonPage>
+            <IonLabel className='ion-margin-top'>
+              <h1>High Score: {currentUser?.score}</h1>
+            </IonLabel>
+          </div>
+          
+        </IonContent>
+      </IonPage>
+    :
+      <PlayGame generation={props.generation} goBack={() => setIsPlayingGame(false)}/>
+    
   );
 };
 
