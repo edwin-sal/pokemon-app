@@ -11,6 +11,8 @@ const fetchRandomPokemon = async (generation) => {
     const randomIndex = Math.floor(Math.random() * pokemonList.length);
     const randomPokemon = pokemonList[randomIndex];
 
+    console.warn(randomPokemon);
+
     // Fetch detailed data of the selected Pokémon
     const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomPokemon.name}`);
     const pokemonData = await pokemonResponse.json();

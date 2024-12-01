@@ -9,6 +9,7 @@ const Play = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [pokemonGif, setPokemonGif] = useState('../../../resources/images/gifs/mew.gif');
   const [isPlayingGame, setIsPlayingGame] = useState(false);
+  const [newHighScore, setNewHighScore] = useState(0);
 
   // Fetch data of the current user
   useEffect(() => {
@@ -21,7 +22,7 @@ const Play = (props) => {
     } catch (error) {
       console.error('Error parsing currentUser from localStorage:', error);
     }
-  }, []);
+  }, [newHighScore]);
 
   // Set pokemon gif
   useEffect(() => {
@@ -65,7 +66,11 @@ const Play = (props) => {
         </IonContent>
       </IonPage>
     :
-      <PlayGame generation={props.generation} goBack={() => setIsPlayingGame(false)}/>
+      <PlayGame 
+        generation={props.generation} 
+        goBack={() => setIsPlayingGame(false)} 
+        setNewHighScore={setNewHighScore}
+      />
     
   );
 };
