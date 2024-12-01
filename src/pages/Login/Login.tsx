@@ -5,9 +5,12 @@ import loginIcon from '../../../resources/images/whos-that-pokemon-logo.png';
 import profilePicture from '../../../resources/images/default-profile.jpg';
 import { useState } from 'react';
 import { add } from 'ionicons/icons';
+import { useHistory } from 'react-router-dom';
+
 
 const Login: React.FC = () => {
   const profileUrl = '../../../resources/images/profiles/';
+  const history = useHistory();
 
   const [profilePicture, setProfilePicture] = useState(`${profileUrl}profile1.webp`);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,14 +42,14 @@ const Login: React.FC = () => {
       return;
     }
 
-    // Set info to localStorage. Store if empty, update if not.
+    // Set info to localStorage
     interface User {
       username: string;
       profilePicture: string;
       score: number;
     }
 
-
+    // If users in localSstorage is empty, set a new one
     if (localStorage.getItem('users') === null) {
       localStorage.setItem('users', JSON.stringify([{
         username: userName,
@@ -55,6 +58,7 @@ const Login: React.FC = () => {
       }]))
     } 
     
+    // Check if the username already exists
     else {
       const storedUsers = localStorage.getItem('users');
       const data: User[] = storedUsers ? JSON.parse(storedUsers) : [];
@@ -69,24 +73,22 @@ const Login: React.FC = () => {
         } 
       }
 
-      // Show error message if username already exists
-      if(userNameAlreadyExist) {
-        setErrorInfo({
-          header: 'Invalid Username',
-          message: `Username "${userName} already exists! Please enter a new one."`,
-        });
-        setIsAlertOpen(true);
-        return;
+      // Add new user if it doesn't exists yet
+      if(!userNameAlreadyExist) {
+        const updatedData = [...data, {
+          username: userName,
+          profilePicture: profilePicture,
+          score: 0,
+        }]
+
+        localStorage.setItem('users', JSON.stringify(updatedData));
       }
 
-      // Insert user name to localStorage
-      const updatedData = [...data, {
-        username: userName,
-        profilePicture: profilePicture,
-        score: 0,
-      }]
+      // Set authentication to true
+      localStorage.setItem('isAuthenticated', JSON.stringify(true));
 
-      localStorage.setItem('users', JSON.stringify(updatedData));
+      // Navigate to /home
+      history.push('/home'); // Navigate to '/dashboard'
     }
   };
 
