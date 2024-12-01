@@ -9,7 +9,7 @@ import {
   IonTabs,
   useIonRouter,
 } from '@ionic/react';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { ellipse, gameController, settings, square, triangle } from 'ionicons/icons';
 import Tab1 from '../Tab1';
 import Tab2 from '../Tab2';
 import Tab3 from '../Tab3';
@@ -25,30 +25,29 @@ const MainPage: React.FC = () => {
     if(!isAuthenticated) {
       history.replace('/login');
     }
-  }, [])
+  }, [history])
 
   return (
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path="/home/tab1" component={Tab1} />
-        <Route exact path="/home/tab2" component={Tab2} />
-        <Route exact path="/home/tab3" component={Tab3} />
+        <Route exact path="/home/play" component={Tab1} />
+        <Route exact path="/home/settings" component={Tab2} />
+
         {/* Redirect /home to /home/tab1 */}
-        <Route exact path="/home" render={() => <Redirect to="/home/tab1" />} />
+        <Route exact path="/home" render={() => <Redirect to="/home/play" />} />
       </IonRouterOutlet>
+
       <IonTabBar slot="bottom">
-        <IonTabButton tab="tab1" href="/home/tab1">
-          <IonIcon aria-hidden="true" icon={triangle} />
-          <IonLabel>Tab 1</IonLabel>
+        <IonTabButton tab="play" href="/home/play">
+          <IonIcon aria-hidden="true" icon={gameController} />
+          <IonLabel>Play</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab2" href="/home/tab2">
-          <IonIcon aria-hidden="true" icon={ellipse} />
-          <IonLabel>Tab 2</IonLabel>
+
+        <IonTabButton tab="settings" href="/home/settings">
+          <IonIcon aria-hidden="true" icon={settings} />
+          <IonLabel>Settings</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab3" href="/home/tab3">
-          <IonIcon aria-hidden="true" icon={square} />
-          <IonLabel>Tab 3</IonLabel>
-        </IonTabButton>
+        
       </IonTabBar>
     </IonTabs>
   );
