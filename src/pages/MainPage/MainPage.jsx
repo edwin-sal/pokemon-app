@@ -10,7 +10,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { ellipse, gameController, settings, square, triangle } from 'ionicons/icons';
-import Play from '../Play';
+import Play from '../Play/Play';
 import Settings from '../Settings';
 
 const MainPage = () => {
