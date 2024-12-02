@@ -63,7 +63,7 @@ const App = () => {
           <Route exact path='/login' component={Login} />
           <Route path='/home' component={MainPage} />
 
-          <Redirect exact from="/" to="/home" />
+          <Redirect exact from="/" to="/login" />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

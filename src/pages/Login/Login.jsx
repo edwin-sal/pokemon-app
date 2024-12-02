@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react';
 import { add } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 
+// import profileIcon from '../../assets/images/profiles/'
+
 const Login = () => {
-  const profileUrl = '../../../resources/images/profiles/';
+  const profileUrl = '../../assets/images/profiles/';
   const history = useHistory();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(`${profileUrl}profile1.webp`);
+  const [profilePicture, setProfilePicture] = useState(`https://shorturl.at/sEPlV`);
   const [isOpen, setIsOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [userName, setUserName] = useState('');
@@ -44,13 +46,22 @@ const Login = () => {
   }, [])
   
   const profilePictures = [
-    'profile1.webp',
-    'profile2.webp',
-    'profile3.webp',
-    'profile4.webp',
-    'profile5.webp',
-    'profile6.webp',
-    'diwata.webp',
+    'https://shorturl.at/sEPlV', // profile1
+    'https://shorturl.at/WPbyW', // profile2
+
+    // profile3
+    'https://firebasestorage.googleapis.com/v0/b/studeefy-fb668.appspot.com/o/pokemon%2Fimages%2Fprofiles%2Fprofile3.webp?alt=media&token=5d4770ed-53ea-40fa-be01-009142c7ae0b', 
+
+    // profile4
+    'https://firebasestorage.googleapis.com/v0/b/studeefy-fb668.appspot.com/o/pokemon%2Fimages%2Fprofiles%2Fprofile4.webp?alt=media&token=f8255fa9-ae78-497b-977a-59bd302c6f83',
+
+    // profile5
+    'https://firebasestorage.googleapis.com/v0/b/studeefy-fb668.appspot.com/o/pokemon%2Fimages%2Fprofiles%2Fprofile5.webp?alt=media&token=8fbec628-9d21-4622-a758-698049fc6ec3',
+
+    // profile6
+    'https://firebasestorage.googleapis.com/v0/b/studeefy-fb668.appspot.com/o/pokemon%2Fimages%2Fprofiles%2Fprofile6.webp?alt=media&token=0204298f-23fb-4fc0-9e8a-2a9d07d64982',
+    
+    'https://shorturl.at/03X3d', // Diwata
   ];
 
   const handleLogin = () => {
@@ -129,6 +140,8 @@ const Login = () => {
     setUserName(event.detail.value);
   };
 
+  console.log(profilePictures)
+
   // console.log(userName);
   // console.log(profilePicture)
   // console.log(usersData);
@@ -186,6 +199,7 @@ const Login = () => {
               </IonButtons>
             </IonToolbar>
           </IonHeader>
+
           <IonContent className="ion-padding">
             <div className={styles['profile-pictures-container']}>
               {profilePictures.map((fileName, index) => (
@@ -193,12 +207,12 @@ const Login = () => {
                   className={styles['fit-content-button']}
                   key={index}
                   onClick={() => {
-                    setProfilePicture(profileUrl + fileName)
+                    setProfilePicture(profilePictures[index])
                     setIsOpen(false);
                   }}
                   id={fileName}>
                   <img 
-                    src={profileUrl + fileName} 
+                    src={profilePictures[index]} 
                     alt="User profile picture" 
                     className={styles['profile-picture']}
                   />
