@@ -11,6 +11,7 @@ const Play = (props) => {
   const [pokemonGif, setPokemonGif] = useState(null);
   const [isPlayingGame, setIsPlayingGame] = useState(false);
   const [newHighScore, setNewHighScore] = useState(0);
+  const [toggleRandomGif, setToggleRandomGif] = useState(false);
 
   // Fetch data of the current user
   useEffect(() => {
@@ -61,7 +62,7 @@ const Play = (props) => {
 
     const randomGif = pokemons[Math.floor(Math.random() * pokemons.length)];
     setPokemonGif(randomGif);
-  }, []);
+  }, [toggleRandomGif]);
 
   console.log(props.generation);
   return (
@@ -71,6 +72,7 @@ const Play = (props) => {
         <IonContent fullscreen className={styles['play-background']}>
           <div className={styles['play-button-container']}>
             <img 
+              onClick={() => setToggleRandomGif(prevToggleRandomGif => !prevToggleRandomGif)}
               src={pokemonGif}
               alt="Pokemon gif"
               width="200px"

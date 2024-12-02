@@ -1,5 +1,5 @@
 import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonNote, IonPage, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
-import { analytics, caretForwardCircleOutline, caretUpCircleOutline, chevronBackCircle, chevronForwardOutline, chevronUpCircle, chevronUpOutline, gameController, logOut, logOutOutline, trophy } from 'ionicons/icons';
+import { analytics, caretForwardCircleOutline, caretUpCircleOutline, chevronBackCircle, chevronForwardOutline, chevronUpCircle, chevronUpOutline, gameController, logOut, logOutOutline, people, peopleCircle, person, personAdd, personAddOutline, statsChart, trophy } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 
 import '@ionic/react/css/palettes/dark.class.css';
@@ -115,7 +115,7 @@ const Settings = (props) => {
 
           <IonItem button onClick={() => setShowLeaderboard(true)}>
             <IonLabel>View Leaderboard</IonLabel>
-            <IonIcon aria-hidden="true" icon={analytics} />
+            <IonIcon aria-hidden="true" icon={statsChart} />
           </IonItem>
 
           <IonItem>
@@ -133,14 +133,14 @@ const Settings = (props) => {
           </IonItem>
 
           <IonItem button onClick={handleLogout}>
-            <IonLabel>Logout</IonLabel>
-            <IonIcon aria-hidden="true" icon={logOutOutline} />
+            <IonLabel>Change user</IonLabel>
+            <IonIcon aria-hidden="true" icon={people} />
           </IonItem>
 
         </IonList>
       </IonContent>
 
-      <IonModal isOpen={showLeaderboard}>
+      <IonModal isOpen={showLeaderboard} onDidDismiss={() => setShowLeaderboard(false)}>
           <IonHeader>
             <IonToolbar>
               <IonTitle>Leaderboard</IonTitle>

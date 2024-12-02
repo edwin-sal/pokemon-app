@@ -110,7 +110,6 @@ const Login = () => {
         }
       });
     }
-     
 
     console.warn(updatedUsers);
 
@@ -221,11 +220,11 @@ const Login = () => {
             </div>
           </IonContent>
 
-          <IonFab slot="fixed" vertical="bottom" horizontal="end">
+          {/* <IonFab slot="fixed" vertical="bottom" horizontal="end">
             <IonFabButton>
               <IonIcon icon={add}></IonIcon>
             </IonFabButton>
-          </IonFab>
+          </IonFab> */}
         </IonModal>
 
         <IonAlert

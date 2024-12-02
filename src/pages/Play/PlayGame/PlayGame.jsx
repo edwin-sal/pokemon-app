@@ -1,8 +1,9 @@
 import { IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonLabel, IonLoading, IonPage, IonText, IonToast, useIonLoading } from "@ionic/react";
 
 import styles from './PlayGame.module.css';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import fetchRandomPokemon from "../../../utils/fetchRandomPokemon";
+import { Haptics } from "@capacitor/haptics";
 
 export default function PlayGame(props) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -19,6 +20,8 @@ export default function PlayGame(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [showHiddenPokemon, setShowHiddenPokemon] = useState(false);
   const [isLost, setIsLost] = useState(false);
+  const [isAnswerSelected, setIsAnswerSelected] = useState(false);
+  const audioRef = useRef(null);
 
   const blackFilter = {
     filter: 'grayscale(100%) brightness(2%)',
@@ -41,6 +44,9 @@ export default function PlayGame(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Play who's that pokemon
+        playAudio();
+
         setLoading(true);
         const pokemon1 = await fetchRandomPokemon(props.generation);
         const pokemon2 = await fetchRandomPokemon(props.generation);
@@ -50,8 +56,11 @@ export default function PlayGame(props) {
         const randomIndex = Math.floor(Math.random() * randomPokemonsContainer.length);
         // console.warn(randomIndex);
 
+        
+
         setRandomPokemons(randomPokemonsContainer);
         setHiddenPokemon(randomPokemonsContainer[randomIndex]);
+        setIsAnswerSelected(false);
       } 
       
       catch (error) {
@@ -68,18 +77,26 @@ export default function PlayGame(props) {
   }, [newFetch]);
 
   // Handle answer of user by clicking one of the choices
-  const handleSelectAnswer = (userPick) => {
+  const handleSelectAnswer = async (userPick) => {
     const isCorrectAnswer = userPick.name === hiddenPokemon.name;
     let score = currentScore;
 
-    // Show pokemon
+    // Show hidden pokemon
     setShowHiddenPokemon(true);
+
+    // Disabled buttons so no duplicates
+    setIsAnswerSelected(true);
+    
 
     // Update score
     if(isCorrectAnswer) {
       setCurrentScore(prevCurrentScore => prevCurrentScore += 1);
       score++;
+
     } else {
+      // Vibrate
+      await Haptics.vibrate();
+
       setShowAlert(true);
 
       // For hiding the next button
@@ -125,10 +142,17 @@ export default function PlayGame(props) {
     });
   };
 
+  // Play sound of pokemon
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
   // console.log(props.generation);
   // console.log(randomPokemons);
-  // console.log(hiddenPokemon);
-  console.log(currentUser);
+  console.log(hiddenPokemon);
+  // console.log(currentUser);
   // console.log(showAlert);
   return(
     <IonPage>
@@ -182,13 +206,15 @@ export default function PlayGame(props) {
 
             <IonCardHeader className="ion-text-center">
               <IonCardTitle>Who's that Pokémon?</IonCardTitle>
-              <IonCardSubtitle>Tap a button below to answer</IonCardSubtitle>
+              <IonCardSubtitle>
+                {isAnswerSelected ? `It's ${hiddenPokemon.name.toUpperCase()}!` : 'Tap a button below to answer'} 
+              </IonCardSubtitle>
             </IonCardHeader>
 
             <IonCardContent>
               <div className={styles['buttons-container']}>
                 {randomPokemons.map((pokemon, index) => (
-                  <IonButton onClick={() => handleSelectAnswer(pokemon)} key={index}>{pokemon.name}</IonButton>
+                  <IonButton disabled={isAnswerSelected} onClick={() => handleSelectAnswer(pokemon)} key={index}>{pokemon.name}</IonButton>
                 ))}
               </div>
             </IonCardContent>
@@ -219,6 +245,7 @@ export default function PlayGame(props) {
         </div>
         
       </IonContent>
+      <audio ref={audioRef} src={'https://shorturl.at/vHj94'} preload="auto" />
     </IonPage>
   );
 }
