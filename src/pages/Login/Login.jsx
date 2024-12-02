@@ -34,10 +34,8 @@ const Login = () => {
   useEffect(() => {
     try {
       const data = localStorage.getItem('users');
-      if(data) {
-        const users = JSON.parse(data);
-        setUsersData(users);
-      }
+      const users = JSON.parse(data);
+      setUsersData(users || []);
     } 
     
     catch (error) {
@@ -78,8 +76,8 @@ const Login = () => {
 
     // Check if user already exists
     let userAlreadyExists = false;
-    for (let i = 0; i < usersData.length; i++) {
-      if (usersData[i].username === user.username) {
+    for (let i = 0; i < usersData?.length; i++) {
+      if (usersData[i]?.username === user?.username) {
         userAlreadyExists = true;
         user = usersData[i];
         break;
@@ -90,13 +88,18 @@ const Login = () => {
     user.profilePicture = profilePicture;
 
     const currentUsers = JSON.parse(localStorage.getItem('users'));
-    const updatedUsers = currentUsers.map(storedUser => {
-      if(storedUser.username === user.username) {
-        return user;
-      } else {
-        return storedUser;
-      }
-    });
+    let updatedUsers = null;
+    console.warn(currentUsers)
+    if(currentUsers) {
+      updatedUsers = currentUsers.map(storedUser => {
+        if(storedUser.username === user.username) {
+          return user;
+        } else {
+          return storedUser;
+        }
+      });
+    }
+     
 
     console.warn(updatedUsers);
 
